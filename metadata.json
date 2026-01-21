@@ -1,0 +1,7 @@
+{
+  "name": "SplitSmart AI",
+  "description": "A sophisticated debt-tracking and expense-splitting application inspired by Splitwise, featuring AI-powered expense categorization and spending insights.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
