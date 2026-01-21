@@ -28,6 +28,16 @@ export interface Expense {
   selectedTargets?: { id: string; type: 'friend' | 'group' }[];
 }
 
+export interface PendingInvoice {
+  id: string;
+  merchant: string;
+  amount: number;
+  date: string;
+  source: 'gmail' | 'sms' | 'manual';
+  sourceDetail?: string; // e.g., "personal@gmail.com" or "SMS: +123456"
+  status: 'pending' | 'dismissed' | 'added';
+}
+
 export interface Group {
   id: string;
   name: string;
@@ -37,10 +47,12 @@ export interface Group {
 }
 
 export enum View {
+  ONBOARDING = 'ONBOARDING',
   DASHBOARD = 'DASHBOARD',
   GROUPS = 'GROUPS',
   FRIENDS = 'FRIENDS',
   ACTIVITY = 'ACTIVITY',
+  REVIEW_INVOICES = 'REVIEW_INVOICES',
   ACCOUNT = 'ACCOUNT',
   GROUP_DETAIL = 'GROUP_DETAIL'
 }

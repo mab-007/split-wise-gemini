@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Friend } from '../types';
-import { ChevronRight, PlusCircle } from 'lucide-react';
+import { ChevronRight, PlusCircle, UserCircle } from 'lucide-react';
+import EmptyState from './EmptyState';
 
 interface FriendsListProps {
   friends: Friend[];
@@ -9,8 +10,20 @@ interface FriendsListProps {
 }
 
 const FriendsList: React.FC<FriendsListProps> = ({ friends, onSelect }) => {
+  if (friends.length === 0) {
+    return (
+      <EmptyState
+        icon={UserCircle}
+        title="No friends yet"
+        description="Add your contacts to split bills individually without a group."
+        actionLabel="Invite a friend"
+        onAction={() => {}}
+      />
+    );
+  }
+
   return (
-    <div className="px-4 py-6 space-y-4">
+    <div className="px-4 py-6 space-y-4 animate-in fade-in duration-500">
       <div className="flex justify-between items-center mb-2 px-2">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Friends</h3>
         <button className="text-emerald-500 text-xs font-bold hover:underline flex items-center gap-1">
@@ -38,9 +51,9 @@ const FriendsList: React.FC<FriendsListProps> = ({ friends, onSelect }) => {
               <h4 className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{friend.name}</h4>
               <p className={`text-xs font-medium mt-0.5 ${friend.balance > 0 ? 'text-emerald-500' : friend.balance < 0 ? 'text-orange-500' : 'text-slate-400'}`}>
                 {friend.balance > 0 
-                  ? `owes you $${friend.balance.toFixed(2)}` 
+                  ? `owes you ₹${friend.balance.toFixed(0)}` 
                   : friend.balance < 0 
-                    ? `you owe $${Math.abs(friend.balance).toFixed(2)}` 
+                    ? `you owe ₹${Math.abs(friend.balance).toFixed(0)}` 
                     : 'settled up'}
               </p>
             </div>

@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Group } from '../types';
-import { ChevronRight, PlusCircle } from 'lucide-react';
+import { ChevronRight, PlusCircle, Users } from 'lucide-react';
+import EmptyState from './EmptyState';
 
 interface GroupListProps {
   groups: Group[];
@@ -10,8 +11,20 @@ interface GroupListProps {
 }
 
 const GroupList: React.FC<GroupListProps> = ({ groups, onSelect, onCreateGroup }) => {
+  if (groups.length === 0) {
+    return (
+      <EmptyState
+        icon={Users}
+        title="No groups"
+        description="Create your first group to start splitting rent, bills, or trips."
+        actionLabel="Create a group"
+        onAction={onCreateGroup}
+      />
+    );
+  }
+
   return (
-    <div className="px-4 py-6 space-y-4">
+    <div className="px-4 py-6 space-y-4 animate-in fade-in duration-500">
       <div className="flex justify-between items-center mb-2 px-2">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Active Groups</h3>
         <button 
@@ -42,20 +55,15 @@ const GroupList: React.FC<GroupListProps> = ({ groups, onSelect, onCreateGroup }
               <h4 className="font-bold text-slate-800">{group.name}</h4>
               <p className={`text-xs font-medium mt-0.5 ${group.balance > 0 ? 'text-emerald-500' : group.balance < 0 ? 'text-orange-500' : 'text-slate-400'}`}>
                 {group.balance > 0 
-                  ? `You are owed $${group.balance.toFixed(2)}` 
+                  ? `You are owed ₹${group.balance.toFixed(0)}` 
                   : group.balance < 0 
-                    ? `You owe $${Math.abs(group.balance).toFixed(2)}` 
+                    ? `You owe ₹${Math.abs(group.balance).toFixed(0)}` 
                     : 'Settled up'}
               </p>
             </div>
             <ChevronRight size={20} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
           </button>
         ))}
-        {groups.length === 0 && (
-          <div className="bg-white p-8 rounded-3xl text-center border-2 border-dashed border-slate-100">
-            <p className="text-slate-400 text-sm">You haven't joined any groups yet.</p>
-          </div>
-        )}
       </div>
     </div>
   );
